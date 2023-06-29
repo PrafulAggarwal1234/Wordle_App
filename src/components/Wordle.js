@@ -9,14 +9,15 @@ export default function Wordle({solution}){
     const {currentGuess,handleKeyup,guesses,isCorrect,turn,usedKeys,flag,setFlag} = useWordle(solution);
     const [showModel,setShowModel] = useState(false);
     const [showPopUp,setShowPopUp]=useState(false);
+    const [modelFlag,setModalFlag]=useState(true);
     useEffect(()=>{
         window.addEventListener('keyup',handleKeyup);
 
-        if(isCorrect){
+        if(modelFlag && isCorrect){
             setTimeout(()=> setShowModel(true),2000);
             window.removeEventListener('keyup',handleKeyup);
         }
-        if(turn>5){
+        if(modelFlag && turn>5){
             setTimeout(()=> setShowModel(true),2000);
             window.removeEventListener('keyup',handleKeyup);
         }
@@ -26,13 +27,13 @@ export default function Wordle({solution}){
         }
 
         return () => window.removeEventListener('keyup',handleKeyup);
-    },[handleKeyup,isCorrect,turn,flag]);
+    },[handleKeyup,isCorrect,turn,flag,modelFlag]);
    
     return(
         <>
         <Grid guesses={guesses} currentGuess={currentGuess} turn={turn}/>
         <Keypad usedKeys={usedKeys}/>
-        {showModel &&<Model won={isCorrect} turn={turn} solution={solution}/>}
+        {modelFlag && showModel &&<Model won={isCorrect} turn={turn} solution={solution} setModalFlag={setModalFlag}/>}
         {showPopUp && <Popup setIsOpen={setShowPopUp} setFlag={setFlag}/>}
         </>
     )

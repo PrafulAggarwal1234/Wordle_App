@@ -1,6 +1,9 @@
 
 
-export default function Modal({won,turn,solution,onCancel}){
+export default function Modal({won,turn,solution,setModalFlag}){
+    const togglePopup = () => {
+        setModalFlag(false);
+      };
     return(
         <div className="modal">
             {won && (
@@ -17,6 +20,7 @@ export default function Modal({won,turn,solution,onCancel}){
                     <p>Better Luck next time :)</p>
                 </div>
             )}
+            <button onClick={togglePopup}>Close</button>
         </div>
     )
 }

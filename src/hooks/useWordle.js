@@ -16,9 +16,7 @@ const useWordle = (solution) =>{
             const url= `https://www.dictionaryapi.com/api/v3/references/collegiate/json/$${word}?key=a399ccf5-96fd-40b3-83f9-4aad1747ae3f`;
             const response = await axios.get(url);
             // The API response will be an array of definitions if the word is valid
-            console.log('response',response.data);
             if(response.data.includes(word)) {
-                console.log("valid word");
                 return true;
             }
             else{ 
@@ -110,11 +108,9 @@ const useWordle = (solution) =>{
                     })
                     const formatted=formatGuess();
                     addNewGuess(formatted);
-                    console.log(`${currentGuess} is a valid English word.`);
                     return;
                 } else {
                     setFlag(true);
-                    console.log(`${currentGuess} is not a valid English word.`);
                 }
             })
             .catch(err => {

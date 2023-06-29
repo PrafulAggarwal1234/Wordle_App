@@ -1,4 +1,6 @@
 import { useState } from "react"
+import axios from "axios";
+import Popup from "../components/Popup";
 
 const useWordle = (solution) =>{
     const [turn,setTurn]=useState(0); //track which turn is going on
@@ -7,6 +9,27 @@ const useWordle = (solution) =>{
     const [history,setHistory]=useState([]); //it will be  containg simple word array
     const [isCorrect,setIsCorrect] = useState(false);
     const [usedKeys,setUsedKeys] = useState({}); //{a: 'green',b:'yellow' etc}
+    const [flag,setFlag]=useState(false);
+
+    async function checkWordValidity(word) {
+        try {
+            const url= `https://www.dictionaryapi.com/api/v3/references/collegiate/json/$${word}?key=a399ccf5-96fd-40b3-83f9-4aad1747ae3f`;
+            const response = await axios.get(url);
+            // The API response will be an array of definitions if the word is valid
+            console.log('response',response.data);
+            if(response.data.includes(word)) {
+                console.log("valid word");
+                return true;
+            }
+            else{ 
+                console.log("Invalid Word");
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
 
     //format new guess into array of letter objects
     const formatGuess = () => {
@@ -78,13 +101,25 @@ const useWordle = (solution) =>{
         })
         return;
        }
-       if(key==='Enter' && currentGuess.length===5 && turn<6 && !history.includes(currentGuess) ){
-            setHistory((prev)=>{
-                return [...prev,currentGuess];
+       if(key==='Enter' && currentGuess.length===5 && turn<6 && !history.includes(currentGuess)){
+            checkWordValidity(currentGuess)
+            .then(isValid => {
+                if (isValid) {
+                    setHistory((prev)=>{
+                        return [...prev,currentGuess];
+                    })
+                    const formatted=formatGuess();
+                    addNewGuess(formatted);
+                    console.log(`${currentGuess} is a valid English word.`);
+                    return;
+                } else {
+                    setFlag(true);
+                    console.log(`${currentGuess} is not a valid English word.`);
+                }
             })
-            const formatted=formatGuess();
-            addNewGuess(formatted);
-            return;
+            .catch(err => {
+                console.error(err);
+            });
        }
         if(/^[A-Za-z]$/.test(key)){
             key=key.toLowerCase();
@@ -97,7 +132,7 @@ const useWordle = (solution) =>{
         }
     }
 
-    return {turn,currentGuess,guesses,isCorrect,usedKeys,handleKeyup}
+    return {turn,currentGuess,guesses,isCorrect,usedKeys,handleKeyup,flag,setCurrentGuess,setFlag}
 }
 
 export default useWordle;

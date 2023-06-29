@@ -87,6 +87,7 @@ const useWordle = (solution) =>{
             return;
        }
         if(/^[A-Za-z]$/.test(key)){
+            key=key.toLowerCase();
             if(currentGuess.length<5){
                 setCurrentGuess((prev)=>{
                     return prev+key;

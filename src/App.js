@@ -8,9 +8,10 @@ function App() {
     .then(json=>{
       let index=Math.floor(Math.random()*json.length);
       setSolution(json[index].word);
-     //we need to select a random element from it, hence we genrate a random int from 0 & n
+      //we need to select a random element from it, hence we genrate a random int from 0 & n
     })
   },[setSolution])
+  console.log(solution);
   return (
     <div className="App">
       <h1>Wordle</h1>

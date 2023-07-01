@@ -6,10 +6,13 @@ import Model from "./Modal";
 import Popup from "./Popup";
 
 export default function Wordle({solution}){
-    const {currentGuess,handleKeyup,guesses,isCorrect,turn,usedKeys,flag,setFlag} = useWordle(solution);
+    const {currentGuess,handleKeyup,guesses,isCorrect,turn,usedKeys,flag,setFlag,handleMouseClick} = useWordle(solution);
     const [showModel,setShowModel] = useState(false);
     const [showPopUp,setShowPopUp]=useState(false);
     const [modelFlag,setModalFlag]=useState(true);
+    const handleClicktemp = (l) =>{
+        console.log("clciked",l);
+    }
     useEffect(()=>{
         window.addEventListener('keyup',handleKeyup);
 
@@ -32,7 +35,7 @@ export default function Wordle({solution}){
     return(
         <>
         <Grid guesses={guesses} currentGuess={currentGuess} turn={turn}/>
-        <Keypad usedKeys={usedKeys}/>
+        <Keypad usedKeys={usedKeys} handleClick={handleMouseClick}/>
         {modelFlag && showModel &&<Model won={isCorrect} turn={turn} solution={solution} setModalFlag={setModalFlag}/>}
         {showPopUp && <Popup setIsOpen={setShowPopUp} setFlag={setFlag}/>}
         </>

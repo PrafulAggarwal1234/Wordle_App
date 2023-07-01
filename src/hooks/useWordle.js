@@ -93,6 +93,7 @@ const useWordle = (solution) =>{
     // handle keyup event & track current guess
     //if user presses enter add the new guess
     const handleKeyup = ({key}) =>{
+        console.log("keyup: ,",key);
        if(key==='Backspace'){
         setCurrentGuess((prev)=>{
             return prev.slice(0,-1);
@@ -127,8 +128,43 @@ const useWordle = (solution) =>{
             console.log(currentGuess);
         }
     }
-
-    return {turn,currentGuess,guesses,isCorrect,usedKeys,handleKeyup,flag,setCurrentGuess,setFlag}
+    const handleMouseClick = (key) =>{
+        console.log("mouseclick: ,",key);
+       if(key==='Backspace'){
+        setCurrentGuess((prev)=>{
+            return prev.slice(0,-1);
+        })
+        return;
+       }
+       if(key==='Enter' && currentGuess.length===5 && turn<6 && !history.includes(currentGuess)){
+            checkWordValidity(currentGuess)
+            .then(isValid => {
+                if (isValid) {
+                    setHistory((prev)=>{
+                        return [...prev,currentGuess];
+                    })
+                    const formatted=formatGuess();
+                    addNewGuess(formatted);
+                    return;
+                } else {
+                    setFlag(true);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+       }
+        if(/^[A-Za-z]$/.test(key)){
+            key=key.toLowerCase();
+            if(currentGuess.length<5){
+                setCurrentGuess((prev)=>{
+                    return prev+key;
+                });
+            }
+            console.log(currentGuess);
+        }
+    }
+    return {turn,currentGuess,guesses,isCorrect,usedKeys,handleKeyup,flag,setCurrentGuess,setFlag,handleMouseClick}
 }
 
 export default useWordle;

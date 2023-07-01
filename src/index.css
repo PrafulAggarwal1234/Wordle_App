@@ -78,15 +78,13 @@ h1{
   line-height: 50px;
 }
 
-.keypad .enter{
-  margin: 5px;
+.keypad #Enter{
   width: 60px;
-  height: 50px;
-  background:#eee;
-  display: inline-block;
-  border-radius: 6px;
-  line-height: 50px;
 }
+.keypad #Backspace{
+  width: 55px;
+}
+  
 
 .keypad div.green{
   background:#5ac85a;

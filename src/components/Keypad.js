@@ -6,24 +6,20 @@ export default function Keypad({usedKeys,handleClick}){
     }
     const [letters,setLetters]=useState(null);
     useEffect(()=>{
-            var alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i));
-            setLetters(alphabet)
-
+        var alphabet = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l','Enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm'];
+        setLetters(alphabet)
     },[]);
 
     return (
         <div className='keypad'>
             {letters && letters.map((l) =>{
                 return(
-                    <div key={l} className={usedKeys[l]} onClick={(()=>{handleClick(l)})}>
+                    <div id={l} key={l} className={usedKeys[l]} onClick={(()=>{handleClick(l)})}>
                         {l}
                     </div>
                 )
             })}
-             <div className='enter' onClick={(()=>{handleClick("Enter")})}>
-             Enter
-            </div>
-             <div  className='enter' onClick={(()=>{handleClick("Backspace")})}>
+             <div  id='Backspace' onClick={(()=>{handleClick("Backspace")})}>
              ⌫
             </div>
         </div>

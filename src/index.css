@@ -1,3 +1,4 @@
+
 body {
   text-align: center;
   font-size: 1em;
@@ -66,6 +67,7 @@ h1{
 .keypad{
   max-width: 500px;
   margin: 20px auto;
+  
 }
 
 .keypad div{
@@ -78,13 +80,18 @@ h1{
   line-height: 50px;
 }
 
+
 .keypad #Enter{
   width: 60px;
 }
 .keypad #Backspace{
-  width: 55px;
+  width: 50px;
 }
-  
+@media only screen and (max-width: 400px){
+  .keypad div{width:27px;}
+  .keypad #Enter{width: 55px}
+  .keypad #Backspace{width: 40px;}
+}
 
 .keypad div.green{
   background:#5ac85a;

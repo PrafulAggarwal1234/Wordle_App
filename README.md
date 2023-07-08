@@ -1,4 +1,4 @@
-#[Wordle App]
+# [Wordle App]
 
 [Click Here to Try the Live Version](https://prafulaggarwal1234.github.io/wordle_app/)
 

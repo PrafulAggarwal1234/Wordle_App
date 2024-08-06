@@ -2,7 +2,7 @@ import { useState } from "react"
 import axios from "axios";
 import Popup from "../components/Popup";
 
-const useWordle = (solution) =>{
+const useWordle = ({solution,socket,player2}) =>{
     const [turn,setTurn]=useState(0); //track which turn is going on
     const [currentGuess,setCurrentGuess]=useState(''); //it will be a string
     const [guesses,setGuesses]=useState([...Array(6)]); //it will be a array of strings and color
@@ -56,10 +56,15 @@ const useWordle = (solution) =>{
 
     //add a new guess to guesses state
     const addNewGuess = (formatedGuess) =>{
-        if(solution===currentGuess) setIsCorrect(true);
+        let flag_temp=false;
+        if(solution===currentGuess) {
+            setIsCorrect(true);
+            flag_temp=true;
+        }
         setGuesses((prev)=>{
             const newGuesses=[...prev];
             newGuesses[turn]=formatedGuess;
+            socket.emit('opponents-progress',{to: player2.socket_id, body: {guesses: newGuesses, hasWon: flag_temp}})
             return newGuesses;
         })
         setHistory((prevHistory)=>{
@@ -86,6 +91,7 @@ const useWordle = (solution) =>{
             })
             return newKeys;
         })
+        // socket.emit('oppenents-progress',{to: player2.socket_id, guesses: guesses})
         //rest the current guess 
         setCurrentGuess('');
     }
@@ -109,6 +115,7 @@ const useWordle = (solution) =>{
                     })
                     const formatted=formatGuess();
                     addNewGuess(formatted);
+                    // socket.emit('oppenents-progress',{to: player2.socket_id, guesses: guesses})
                     return;
                 } else {
                     setFlag(true);
